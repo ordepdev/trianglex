@@ -82,4 +82,9 @@ defmodule Trianglex do
       Enum.zip(Trianglex.left(rows,:down), Trianglex.right(rows,:down))
     )
   end
+
+  @doc """
+  Given a valid triangle, it will print it.
+  """
+  def print([{_, _} | _] = mirror), do: mirror |> Enum.each(fn {l,r} -> IO.puts l++r end)
 end
