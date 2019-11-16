@@ -3,6 +3,6 @@ defmodule TrianglexTest do
   doctest Trianglex
 
   test "greets the world" do
-    #assert Trianglex.hello() == :world
+    # assert Trianglex.hello() == :world
   end
 end

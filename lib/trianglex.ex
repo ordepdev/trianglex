@@ -1,5 +1,4 @@
 defmodule Trianglex do
-
   @blank " "
   @moduledoc """
   Documentation for Trianglex.
@@ -26,13 +25,19 @@ defmodule Trianglex do
 
   """
   def right(1), do: :not_a_triangle
+
   def right(rows) do
     Range.new(1, rows)
-    |> Enum.reduce([], fn row, acc -> acc ++ [List.duplicate("*", row)] end)
+    |> Enum.reduce([], fn row, acc ->
+      acc ++ [List.duplicate("*", row)]
+    end)
   end
+
   def right(rows, :down) do
     Range.new(rows, 1)
-    |> Enum.reduce([], fn row, acc -> acc ++ [List.duplicate("*", row) ++ List.duplicate(@blank, rows-row)] end)
+    |> Enum.reduce([], fn row, acc ->
+      acc ++ [List.duplicate("*", row) ++ List.duplicate(@blank, rows - row)]
+    end)
   end
 
   @doc """
@@ -63,28 +68,37 @@ defmodule Trianglex do
 
   """
   def left(1), do: :not_a_triangle
+
   def left(rows) do
     Range.new(1, rows)
-    |> Enum.reduce([], fn row, acc -> acc ++ [List.duplicate(@blank, rows-row) ++ List.duplicate("*", row)] end)
+    |> Enum.reduce([], fn row, acc ->
+      acc ++ [List.duplicate(@blank, rows - row) ++ List.duplicate("*", row)]
+    end)
   end
+
   def left(rows, :down) do
     Range.new(rows, 1)
-    |> Enum.reduce([], fn row, acc -> acc ++ [List.duplicate(@blank, rows-row) ++ List.duplicate("*", row)] end)
+    |> Enum.reduce([], fn row, acc ->
+      acc ++ [List.duplicate(@blank, rows - row) ++ List.duplicate("*", row)]
+    end)
   end
 
   @doc """
   Mirrors a left triangle.
   """
   def mirror(1), do: :not_a_triangle
+
   def mirror(rows) do
     Enum.concat(
       Enum.zip(Trianglex.left(rows), Trianglex.right(rows)),
-      Enum.zip(Trianglex.left(rows,:down), Trianglex.right(rows,:down))
+      Enum.zip(Trianglex.left(rows, :down), Trianglex.right(rows, :down))
     )
   end
 
   @doc """
   Given a valid triangle, it will print it.
   """
-  def print([{_, _} | _] = mirror), do: mirror |> Enum.each(fn {l,r} -> IO.puts l++r end)
+  def print([{_, _} | _] = mirror) do
+    Enum.each(mirror, fn {l, r} -> IO.puts(l ++ r) end)
+  end
 end
