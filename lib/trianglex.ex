@@ -7,6 +7,16 @@ defmodule Trianglex do
   defstruct [:value]
 
   @doc """
+
+  """
+  def empty(rows) do
+    Range.new(1, rows)
+    |> Enum.reduce([], fn _, acc ->
+      acc ++ [List.duplicate(@blank, rows)]
+    end)
+  end
+
+  @doc """
   Makes the simplest right upwards tringle.
 
   ## Examples
@@ -84,21 +94,43 @@ defmodule Trianglex do
   end
 
   @doc """
-  Mirrors a left triangle.
-  """
-  def mirror(1), do: :not_a_triangle
+  Mirrors a given triangle.
 
-  def mirror(rows) do
-    Enum.concat(
-      Enum.zip(Trianglex.left(rows), Trianglex.right(rows)),
-      Enum.zip(Trianglex.left(rows, :down), Trianglex.right(rows, :down))
-    )
+  ## Examples
+
+      iex> Trianglex.left(2) |> Trianglex.mirror
+      [["*"," "], ["*", "*"]]
+
+      iex> Trianglex.left(3) |> Trianglex.mirror
+      [["*"," "," "], ["*", "*"," "], ["*", "*", "*"]]
+
+  """
+  def mirror(triangle) do
+    triangle
+    |> Enum.map(fn row -> Enum.reverse(row) end)
   end
 
   @doc """
-  Given a valid triangle, it will print it.
+  Takes two triagnles and combine them together.
+
+  This can be used to create larger triangles from smaller ones.
+
+  ## Examples
+  
+      iex> Trianglex.left(2) |> Trianglex.combine(Trianglex.right(2))
+      [[" ","*","*"], ["*","*","*","*"]]
+
   """
-  def print([{_, _} | _] = mirror) do
-    Enum.each(mirror, fn {l, r} -> IO.puts(l ++ r) end)
+  def combine(left, right) do
+    left
+    |> Enum.zip(right)
+    |> Enum.map(fn {l,r} -> l ++ r end)
+  end
+
+  @doc """
+  It prints our triangle, yay!
+  """
+  def print(triangle) do
+    Enum.each(triangle, fn row -> IO.puts(row) end)
   end
 end
